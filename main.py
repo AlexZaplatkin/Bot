@@ -8,7 +8,9 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 from credits import *
 
-test.network()
+from translate import Translator
+
+#test.network()
 name = "Алиса"
 list_greeting = ['Hi, ', "Привет, ", "Ку, ", "Привет друг, ", "Привет, как дела? ", "Привет, Хозяин! "]
 anikdots = [
@@ -35,6 +37,15 @@ storys = [
     '''Отрицательной чертой, приписываемой туристам, был вандализм. Сведения о разграблении памятников туристами неоднократно отмечались современниками. Известный адвокат А.Ф.Кони, описывая Дворец правосудия в Париже, вспоминал:\n"В этой комнате устроена в настоящее время скромная часовня, стены которой пришлось выкрасить темной масляной краской, во избежание тех надписей, которыми туристы хотят связать свои ничтожные имена с местами, где разыгрывались исторические события. Пришлось унести из этой комнаты и кресло королевы, чтобы спасти его остатки от тех же туристов, бессмысленно вырезавших из него кусочки себе на память".''',
     '''Было вчера.\nСижу дома, никого не трогаю, починяю примус.\nЗаваливает младшенький , и с порога старшему: "А ты не знаешь, кто Марка убил"?\nЯ знаю, что у старшего был одноклассник Марк, думаю, что вообще гопота местная берега попутала.\nМаму этого Марка знаю, речь уже скорбную сложил, чтобы позвонить ей, посочувствовать.\nСука, как меня только дёрнуло подробности спросить...\nОт жеж жопа была бы. Оказалось, что тот сраный Марк - это персонаж онлайн игры.\nНу как так-то, а?''']
 comands = '/start /info /roll /anikdot /story /animal /commands'
+jokes = ['О ПАССАЖИРАХ С НИЗКИМ РЕЙТИНГОМ\nЦитата: «Идея неплохая. К людям с хорошим рейтингом приезжают водители с хорошим рейтингом. Согласитесь, в эту сторону идея работает. Она абсолютно не работает в обратную сторону. Получается, к людям с плохим рейтингом приезжают водители с плохим рейтингом. То есть прямо сейчас где-то по Санкт-Петербургу ублюдок едет за ублюдком. Они оба очень злые, потому что у них в телефонах написано, что они ублюдки. И „Яндекс“ думает, что из этого получится что-то хорошее».',
+         'О СПАЛЬНЫХ РАЙОНАХ И ГОТИКЕ\nЦитата: «Кто живёт в некрасивых домах? Похлопайте, пожалуйста. Просто я недавно задумался, что если положить фотографии всех мест, где я провёл большую часть своей жизни… Фотографию моего дома, фотографию школы, института. Если вот так в ряд положить, это очень похоже на тот момент в фильме, знаете, когда детектив понимает, почему герой стал серийным убийцей: „А, оказывается, у тебя не было выбора! Ты должен был стать серийным убийцей, больше никем ты не мог стать!“\nМне нравится готика, готические соборы. И я недавно узнал одно из главных правил построения готики: рядом с готическим собором ты должен чувствовать себя ничтожеством. Потому что готический собор настолько возвышенный и прекрасный. И я подумал, что с моим домом это тоже работает. Я тоже чувствую себя ничтожеством, но только потому, что это мой дом».',
+         'О ПРОФЕССИИ ПРОТАПТЫВАТЕЛЯ ДОРОЖЕК\nЦитата: «Я нашла в интернете вакансию „протаптыватель тропинок“. Для благоустройства экопарка требуется персонал для создания тропинок естественного происхождения. Абсолютная правда. Зарплата от 35 до 50 тысяч рублей, обучение бесплатное, на месте. Думаю, самое короткое обучение. Просто идите! Вряд ли там говорят „забудьте всё, чему вас учили в школе, институте“. \nНо главное, вакансия не просто есть, она „освободилась“! Интересно, что случилось с предыдущим сотрудником? Думаю, вряд ли он ушёл сам. Стоптал ноги до колена или протоптал тропинку не туда? Я сразу представила его разговор с начальником. Он сидит, и начальник ему говорит: „Мне кажется, вы топчетесь на одном месте. Я вас увольняю, уходите“. А он такой: „Я не пойду, я не на работе!“».',
+         'ОБ АРХИТЕКТУРЕ ТЕЛЬ-АВИВА\nЦитата: «Когда играешь в компьютерную игру и у тебя комп слабый, ты ставишь настройки графики на минимум. И все здания — чисто геометрические фигуры без каких-либо текстур, теней, освещения.\nИ точно так же, когда ты находишься в Израиле. Смотришь по сторонам — и такой: „Где детали?“. Я не могу. Я жил всю жизнь в архитектуре европейской. Добавьте деталей! Хочется выйти на улицу и крикнуть: „Где гаргульи? Поставьте гаргулий уже, в конце-то концов! Где узоры? Можете сделать узоры? Это сталинка? Это не сталинка! Мы в центре, должны быть сталинки!“».',
+         'О КУЛЬТУРНОМ ДОСУГЕ И «МАКДОНАЛДСЕ»\nЦитата: «Знаете этот момент, когда к вам приезжает друг из другого города и просит показать ему город? И вы показываете ему места, в которых сами не были никогда. Типа: Москва — это Третьяковка. И вы идёте в Третьяковку, и ты не можешь найти вход, потому что там несколько зданий.\nМосквичам вообще плевать на места. Ну, они не в курсе ничего. У меня подруга живёт в Тюмени, она знает больше про Москву. Она как-то прилетела, мы встретились, и она говорит: „Куда пойдём?“ Я задумался, а она такая: „Сейчас в Москве Дни японской культуры, можно туда. А потом — вечеринка-сет разных диджеев из разных стран. Можно туда“. И я такой: „А потом — в "Макдоналдс"!».',
+         'О БЕЛЬЕ В ПОЕЗДАХ И О ПРОВОДНИЦАХ\nЦитата: «Вы вообще знали, что мы не обязаны сдавать бельё проводницам? Похлопайте, кто знал! А чё вы не рассказали остальным? Мы живём в страхе. Я вообще не понимаю, каким образом это работает, потому что они приходят такие: „Сдаём бельё, через семь часов приезжаем“. Ну, там же пространственно-временной континуум тоже у них сломался почему-то. И ты такой: „Да, госпожа, пожалуйста, заберите, не трогайте меня“.\nЯ, значит, сел на эту тахту расстеленную, сижу и думаю: „Сейчас ты получишь у меня, конечно! Давай, заходи, я информацию знаю“. Вооружён, как говорится. Она заходит и говорит: „Молодой человек, бельё сдаём“. Я говорю: „Тебе надо, ты и забирай!“\nВы бы видели! У неё башка закрутилась, как у демона, типа: „А-а-а-а! Откуда ты знаешь?“ Она поползла по потолку, клянусь, к своим подругам: „Нам надо убить его, он всем расскажет!“».',]
+reply_keybord=['/anikdot', '/story',
+               '/animal']
+#markup = ReplyKeyboardMarkup(reply_keybord, one_time_keyboard=False)
 
 bot = Bot(token=bot_token)
 updater = Updater(token=bot_token, use_context=True)
@@ -44,22 +55,27 @@ dispatcher = updater.dispatcher
 def start(update, context):  # старт
     context.bot.send_message(update.effective_chat.id, list_greeting[
         random.randint(0, len(list_greeting) - 1)] + " Меня зовут " + name + "! Команды /commands")
-    print('/start')
+    print('start ', update.effective_chat.id)
 
 
 def info(update, context):  # инфа
     context.bot.send_message(update.effective_chat.id, f"Меня зовут {name}! Меня создал AlexZapl!")
-    print('/info')
+    print('info ', update.effective_chat.id)
 
 
 def message(update, context):  # ответ
-    if update.message.text:
-        context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text=f"Я знаю это слово - это {update.message.text}!")
-    else:
-        context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text="Я пока тебя не совсем понимаю, но скоро научусь")
-    print('msg')
+    en = Translator(to_lang="en")
+    ru = Translator(to_lang="ru")
+    context.bot.send_message(update.effective_chat.id, 'Следующее сообщение станет примечанием:')
+    note = message.__get__(None, Filters.text)
+    print(note)
+    en_trans = en.translate(note)
+    ru_trans = ru.translate(note)
+    #print(f'Перевод на английский: {en_trans}, На русский: {ru_trans}')
+    print(f'Перевод на английский: {en_trans}')
+    #context.bot.send_message(update.effective_chat.id, f'Перевод на английский: {en_trans}, На русский: {ru_trans}')
+    context.bot.send_message(update.effective_chat.id, f'Перевод на английский: {en_trans}')
+    print('msg ', update.effective_chat.id)
 
 
 def roll(update, context):  # игральная кость
@@ -68,22 +84,22 @@ def roll(update, context):  # игральная кость
                        'Text')
     time.sleep(0.5)
     context.bot.send_message(chat_id=update.effective_chat.id, text=f'Выпало число {random.randint(1, 6)}!')
-    print('roll')
+    print('roll ', update.effective_chat.id)
 
 
 def anikdot(update, context):  # аникдот
     context.bot.send_message(chat_id=update.effective_chat.id, text=f'{anikdots[random.randint(0, len(anikdots) - 1)]}')
-    print('anikdot')
+    print('anikdot ', update.effective_chat.id)
 
 
 def story(update, context):  # история
     context.bot.send_message(chat_id=update.effective_chat.id, text=f'{storys[random.randint(0, len(storys) - 1)]}')
-    print('story')
+    print('story ', update.effective_chat.id)
 
 
 def cmd(update, context):  # команды
     context.bot.send_message(chat_id=update.effective_chat.id, text=comands)
-    print('commands')
+    print('commands ', update.effective_chat.id)
 
 
 def animal(update, context):  # текст-вопросы
@@ -111,32 +127,79 @@ def animal(update, context):  # текст-вопросы
         https2 = str(SRA.Img.koala())
     https3 = https2[10:]
     https = https3[:-2]
-    print('animal')
-    bot.send_photo(update.effective_chat.id, https)
+    print('animal ', update.effective_chat.id)
+    bot.send_photo(update.effective_chat.id, https)#, reply_markup=markup)
+
+
+def animal10(update, context):
+    print('animal ', update.effective_chat.id)
+    for i in range(0,100):
+        rand = random.randint(1, 7)
+        if rand == 1:
+            context.bot.send_message(chat_id=update.effective_chat.id, text='Милашка')
+            https2 = str(SRA.Img.cat())
+        elif rand == 2:
+            context.bot.send_message(chat_id=update.effective_chat.id, text='Милашка')
+            https2 = str(SRA.Img.dog())
+        elif rand == 3:
+            context.bot.send_message(chat_id=update.effective_chat.id, text='Милашка')
+            https2 = str(SRA.Img.panda())
+        elif rand == 4:
+            context.bot.send_message(chat_id=update.effective_chat.id, text='Милашка')
+            https2 = str(SRA.Img.red_panda())
+        elif rand == 5:
+            context.bot.send_message(chat_id=update.effective_chat.id, text='Милашка')
+            https2 = str(SRA.Img.birb())
+        elif rand == 6:
+            context.bot.send_message(chat_id=update.effective_chat.id, text='Милашка')
+            https2 = str(SRA.Img.fox())
+        elif rand == 7:
+            context.bot.send_message(chat_id=update.effective_chat.id, text='Милашка')
+            https2 = str(SRA.Img.koala())
+        https3 = https2[10:]
+        https = https3[:-2]
+        bot.send_photo(update.effective_chat.id, https)
+
+
+def joke(update, context):  # команды
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f'{jokes[random.randint(0, len(jokes) - 1)]}')
+    print('joke ', update.effective_chat.id)
+
+
+#def close(update, context):
+    #context.bot.send_message(chat_id=update.effective_chat.id, text=f'Закрыто!', reply_markup=ReplyKeyboardRemove())
 
 
 def unknown(update, context):  # нет команды
     context.bot.send_message(chat_id=update.effective_chat.id, text="Я не знаю этой команды!")
-    print('UNKNOWN')
+    print('UNKNOWN ', update.effective_chat.id)
 
 
 start_handler = CommandHandler('start', start)  # старт
 info_handler = CommandHandler('info', info)  # инфа
-message_handler = MessageHandler(Filters.text, message)  # текст
+message_handler = CommandHandler('translate', message)  # текст
 unknown_handler = MessageHandler(Filters.command, unknown)  # нет команды
 roll_handler = CommandHandler('roll', roll)  # кость
 anikdot_handler = CommandHandler('anikdot', anikdot)  # аникдот
 story_handler = CommandHandler('story', story)  # история
 cmd_handler = CommandHandler('commands', cmd)  # команды
 fox_handler = CommandHandler('animal', animal)  # лиса
+fox2_handler = CommandHandler('animal10', animal10)  # лиса
+joke_handler = CommandHandler('joke', joke)  # шутка
+#close_handler = CommandHandler('close', close)  # close
 dispatcher.add_handler(start_handler)  # старт
 dispatcher.add_handler(info_handler)  # инфа
-# dispatcher.add_handler(message_handler)#текст
+dispatcher.add_handler(message_handler)#текст
 dispatcher.add_handler(roll_handler)  # кость
 dispatcher.add_handler(anikdot_handler)  # аникдот
 dispatcher.add_handler(story_handler)  # история
 dispatcher.add_handler(cmd_handler)  # команды
 dispatcher.add_handler(fox_handler)  # текст-вопросы
+dispatcher.add_handler(fox2_handler)  # текст-вопросы
+dispatcher.add_handler(joke_handler)  # шутка
+
+#dispatcher.add_handler(close_handler)  # текст-вопросы
+
 
 dispatcher.add_handler(unknown_handler)  # нет команды
 
