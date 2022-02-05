@@ -64,10 +64,12 @@ def info(update, context):  # инфа
 
 
 def message(update, context):  # ответ
-    en = Translator(to_lang="en")
+    en = Translator(from_lang='ru', to_lang="en")
     ru = Translator(to_lang="ru")
-    context.bot.send_message(update.effective_chat.id, 'Следующее сообщение станет примечанием:')
-    note = message.__get__(None, Filters.text)
+    note = context.args[1]
+    if note == '' or note == None:
+        context.bot.send_message(update.effective_chat.id, 'Нельзя переводить ничего!')
+        return
     print(note)
     en_trans = en.translate(note)
     ru_trans = ru.translate(note)
@@ -166,6 +168,31 @@ def joke(update, context):  # команды
     print('joke ', update.effective_chat.id)
 
 
+def alarm(context):
+    job = context.job
+    context.bot.send_message(job.context, 'ДЗЗЗЫНЬ! Время прошло!')
+
+
+def set_timer(update, context):
+    due = int(context.args[0])
+    if due == '' or due == None:
+        context.bot.send_message(update.effective_chat.id, 'Нельзя ставить пустой таймер таймер!')
+        return
+    if due < 0:
+        context.bot.send_message(update.effective_chat.id, 'Нельзя ставить таймер меньше 0 секунд!')
+        return
+    context.job_queue.run_once(alarm, due, context=update.effective_chat.id, name=str(update.effective_chat.id))
+    context.bot.send_message(update.effective_chat.id, 'Таймер установлен')
+
+
+def counter(update, context):
+    text = str(context.args[0])
+    text2 = text.split()
+    lenned = len(text2)
+    print(text, '\n', text2, '\n', lenned, 'words')
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f"Тут {lenned} слова!")
+
+
 #def close(update, context):
     #context.bot.send_message(chat_id=update.effective_chat.id, text=f'Закрыто!', reply_markup=ReplyKeyboardRemove())
 
@@ -187,6 +214,10 @@ fox_handler = CommandHandler('animal', animal)  # лиса
 fox2_handler = CommandHandler('animal10', animal10)  # лиса
 joke_handler = CommandHandler('joke', joke)  # шутка
 #close_handler = CommandHandler('close', close)  # close
+set_handler = CommandHandler("set_timer", set_timer) # таймер
+count_handler = CommandHandler('count', counter) # счетчик слов
+dispatcher.add_handler(count_handler) # счетчик слов
+dispatcher.add_handler(set_handler) # таймер
 dispatcher.add_handler(start_handler)  # старт
 dispatcher.add_handler(info_handler)  # инфа
 dispatcher.add_handler(message_handler)#текст
